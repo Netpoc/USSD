@@ -1,11 +1,13 @@
+require('dotenv').config();
+require("./config/database").connect();
 const express = require("express");
-const ussdRoute = require("./index");
+const ussdRoute = require("./services/ussdService");
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = process.env.PORT || 6000;
+const port = 6000;
 
-app.listen(PORT, () => console.log(`running on localhost:${PORT}`));
+app.listen(port, () => console.log(`Server running on localhost:${port}`));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));

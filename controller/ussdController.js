@@ -1,19 +1,4 @@
-require('dotenv').config();
-const express = require("express");
-const mongoose = require("mongoose");
-const mongoString = process.env.DATABASE_URL;
-mongoose.connect(mongoString);
-const database = mongoose.connection;
-database.on("error", (error) => {
-    console.log(error);
-});
-database.once("connected", () => {
-    console.log("Database connected...");
-})
-
-const router = express.Router();
-
-router.post("/", (req, res) => {
+exports.ussd = [ (req, res) => {
     // Read variables sent via POST from our SDK
     const { sessionId, serviceCode, phoneNumber, text } = req.body;
   
@@ -51,6 +36,4 @@ router.post("/", (req, res) => {
     res.set("Content-Type: text/plain");
     res.send(response);
     // DONE!!!
-  });
-  
-  module.exports = router;
+  }]
