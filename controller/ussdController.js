@@ -1,10 +1,8 @@
 const Model = require('../models/models');
 exports.ussd = [(req, res) => {
     // Read variables sent via POST from our SDK
-    const { sessionId, serviceCode, phoneNumber, text } = req.body;
-
-    console.log('####################', req.body);
-    let response = "";
+    const { sessionId, phoneNumber, text } = req.body;
+    let response;
 
     if (text === "") {
         console.log('1');
@@ -14,16 +12,15 @@ exports.ussd = [(req, res) => {
     if (text !== '') {
         let array = text.split('*');
         if (array.length === 1) {
-            console.log(array);
+            
             response = 'CON  How many reserve?'
         }
         else if (array.length === 2) {
             //RESERVATION
             if (parseInt(array[1]) > 0) {
-                console.log(array);
+                
                 response = 'CON Do you want to save?\n1.Confirm\n2. Cancel'
             }
-            
             else {
                 response = 'End Network error. Please try again.'
             }
@@ -39,7 +36,7 @@ exports.ussd = [(req, res) => {
                     response = 'END Your reservation was saved successfully.'
                 })
             }
-            else if(parseInt(array[2])===1)
+            else if(parseInt(array[2])===2)
             {
                 response = 'END Data was not saved.'
             }
@@ -49,7 +46,12 @@ exports.ussd = [(req, res) => {
         }
     } 
     // Print the response onto the page so that our SDK can read it
-    res.set("Content-Type: text/plain");
-    res.send(response);
+    //res.set("Content-Type: text/plain");
+    //res.send(response);
     // DONE!!!
+    setTimeout(() => {
+        console.log(array)
+        res.send(response);
+        res.end()
+    }, 2000);
 }]
