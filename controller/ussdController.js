@@ -37,6 +37,20 @@ exports.ussd = [(req, res) => {
             else if (parseInt(array[2]) === 2) {
                 response = 'END Data was not saved.'
             }
+            else if (parseInt(array[2]) === 3) {
+                Model.find({}, (err, users) => {
+                    console.log(users)
+                    let users_data = `${
+                        users.length < 1 ?
+                        `No data found`
+                        :
+                        `${users.map((item, index) => {
+                            return `${index + 1} ${item.name}\n`
+                        }).join(".")}`
+                    }`
+                    response = `END Current users.\n${users_data}`
+                })
+            }
             else {
                 response = 'END Invalid input.'
             }
