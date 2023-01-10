@@ -16,4 +16,5 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use("/", ussdRoute);
 
+
 app.listen(port, () => console.log(`Server running on localhost:${port}`));
