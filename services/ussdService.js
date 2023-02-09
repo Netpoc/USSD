@@ -5,4 +5,5 @@ const ussdController = require("../controller/ussdController");
 
 router.post('/', ussdController.ussd);
 
+
 module.exports = router;

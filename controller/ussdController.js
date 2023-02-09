@@ -1,11 +1,10 @@
 const Model = require('../models/models');
-exports.ussd = [(req, res) => {
+exports.ussd = [async (req, res) => {
     // Read variables sent via POST from our SDK
     const { sessionId, phoneNumber, text } = req.body;
     let response;
 
     if (text === "") {
-        console.log('1');
         // Input for Event Attendee Name
         response = 'CON Please, enter your Fullname';
     }
@@ -31,16 +30,22 @@ exports.ussd = [(req, res) => {
                 data.name = array[0];
                 data.tickets = array[1];
                 data.save(() => {
-                    response = 'END Your reservation was saved successfully.'
+                    response = 'CON Your reservation was saved successfully.\n1. View Tickets'
                 })
             }
             else if (parseInt(array[2]) === 2) {
                 response = 'END Data was not saved.'
             }
-            else {
-                response = 'END Invalid input.'
+            else if (parseInt(array[2]) === 3){
+                let data = await Model.find();
+                response = `END ${data.name}`
+                
+            } else {
+                response = 'END Invalid input'
             }
+
         }
+
     }
     // Print the response onto the page so that our SDK can read it
     res.set("Content-Type: text/plain");
