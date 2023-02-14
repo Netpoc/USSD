@@ -4,6 +4,10 @@ const Model = new mongoose.Schema({
         required: true,
         type: String
     },
+    phone: {
+        required: true,
+        type: Number
+    },
     tickets: {
         required: true,
         type: Number
