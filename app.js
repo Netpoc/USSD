@@ -15,7 +15,8 @@ const port = 6000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use("/ussd", ussdRoute);
+app.use("/api/", ussdRoute);
+app.use("/api/", ussdRoute);
 app.get('/', (req, res) => {
    res.send("Welcome to a test USSD server...");
 })
