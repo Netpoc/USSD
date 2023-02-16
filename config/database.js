@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
-//const { DATABASE_URL } = process.env;
+const { DATABASE_URL } = process.env;
 
-let uri = `mongodb+srv://netpoc:73R78hTFgZzmTx6l@cluster0.nmjh1.mongodb.net/?retryWrites=true&w=majority`
 
 exports.connect = () => {
     mongoose
-        .connect(uri, {
+        .connect(DATABASE_URL, {
             useNewUrlParser: true,
         })
         .then(() => {
