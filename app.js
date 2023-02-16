@@ -1,7 +1,7 @@
 require('dotenv').config();
 require("./config/database").connect();
 const express = require("express");
-//const router = express.Router();
+
 const ussdRoute = require("./services/ussdService");
 const bodyParser = require('body-parser');
 
