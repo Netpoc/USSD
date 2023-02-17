@@ -1,51 +1,36 @@
 const bcrypt = require ('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Admin = require("../models/admin")
+const Admin = require("../models/admin");
 
-exports.adminRegister = [(async (req, res) => {
-    try{
-        //Get user information
-        const {firstName, lastName, email, password } = req.body;
-        //Validate user input
-        if(!(email&&password&&firstName&&lastName)) {
-            res.status(400).send("All input is required");
+async function hashPassword(password) {
+    return await bcrypt.hash(password, 10);
+   }
+    
+   async function validatePassword(plainPassword, hashedPassword) {
+    return await bcrypt.compare(plainPassword, hashedPassword);
+   }
+    
+
+exports.adminRegister = [
+    async (req, res, next) => {
+        try {
+         const { email, password, role } = req.body
+         const hashedPassword = await hashPassword(password);
+         const newUser = new Admin({ email, password: hashedPassword, role: role || "basic" });
+         const accessToken = jwt.sign({ userId: newUser._id }, process.env.TOKEN_KEY, {
+          expiresIn: "1d"
+         });
+         newUser.accessToken = accessToken;
+         await newUser.save();
+         res.json({
+          data: newUser,
+          accessToken
+         })
+        } catch (error) {
+         next(error)
         }
-        //Check if user already exist in database
-        const oldUser = await Admin.findOne({email});
-        if (oldUser) {
-            res.status(400).send("Email already exist in database");
-        }
+       }
 
-        //Encrypt user password
-        encryptedPassword = await bcrypt.hash(password, 10);
-
-        //Create the new user in database
-        const user = await Admin.create({
-            first_name: firstName,
-            last_name: lastName,
-            email: email.toLowerCase(),
-            password: encryptedPassword
-        })
-
-        //Create token
-        const token = jwt.sign(
-            { user_id: user._id, email },
-            process.env.TOKEN_KEY,
-            {
-                expiresIn: "5h",
-            }
-        );
-        //Save user token
-        user.token = token;
-
-        //Retunr new User
-        res.status(201).json(user);
-        console.log('User registration successful...');
-    }
-    catch(err){
-        console.log(err);
-    }
-})
 ];
 
 
