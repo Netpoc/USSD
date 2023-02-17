@@ -1,7 +1,3 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
-
-
 const User = require('../models/user');
 
 
@@ -26,18 +22,6 @@ exports.register = [ async (req, res) => {
             last_name: lastName,
             phone: phone
         })
-
-        //Create token
-        const token = jwt.sign(
-            { user_id: user._id, phone },
-            process.env.TOKEN_KEY,
-            {
-                expiresIn: "5h",
-            }
-        );
-        //Save user token
-        user.token = token;
-
         //Retunr new User
         //res.status(201).json(user);
         console.log('User registration successful...');
