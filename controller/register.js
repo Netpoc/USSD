@@ -1,4 +1,8 @@
-router.post('/register', async (req, res) => {
+const bcrypt = require ('bcryptjs');
+const jwt = require('jsonwebtoken');
+const Admin = require("../models/admin")
+
+exports.adminRegister = [(async (req, res) => {
     try{
         //Get user information
         const {firstName, lastName, email, password } = req.body;
@@ -7,7 +11,7 @@ router.post('/register', async (req, res) => {
             res.status(400).send("All input is required");
         }
         //Check if user already exist in database
-        const oldUser = await User.findOne({email});
+        const oldUser = await Admin.findOne({email});
         if (oldUser) {
             res.status(400).send("Email already exist in database");
         }
@@ -16,7 +20,7 @@ router.post('/register', async (req, res) => {
         encryptedPassword = await bcrypt.hash(password, 10);
 
         //Create the new user in database
-        const user = await User.create({
+        const user = await Admin.create({
             first_name: firstName,
             last_name: lastName,
             email: email.toLowerCase(),
@@ -39,13 +43,14 @@ router.post('/register', async (req, res) => {
         console.log('User registration successful...');
     }
     catch(err){
-        console.log("Failed Registeration");
+        console.log(err);
     }
-});
+})
+];
 
 
 //User Login route
-router.post('/login', async (req, res)=> {
+exports.adminLogin = [(async (req, res)=> {
     try {
         //Get user data
         const { email, password } = req.body;
@@ -85,4 +90,4 @@ router.post('/login', async (req, res)=> {
         console.log(res)
         
     }
-});
+})];
