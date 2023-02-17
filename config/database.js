@@ -5,10 +5,10 @@ const { DATABASE_URL } = process.env;
 exports.connect = () => {
     mongoose
         .connect(DATABASE_URL, {
-            useNewUrlParser: true,
+            useNewUrlParser: true,   
         })
         .then(() => {
-            console.log("Database connected");
+            console.log("Database Connected ('_')");
         })
         .catch((error) => {
             console.log("Connection to database failed");
