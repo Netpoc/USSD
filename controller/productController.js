@@ -1,4 +1,4 @@
-const auth = require("../middleware/auth");
+//const auth = require("../middleware/auth");
 const Item = require("../models/item");
 
 
@@ -22,5 +22,16 @@ exports.addItem = [async (req, res, next) => {
     } catch (err) {
         console.log(err);
         res.status(500).send('Server Error');
+    }
+}]
+
+exports.getAll = [async (req, res) => {
+    try{
+        const items = await Item.find();
+        res.status(200).json(items);
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        })
     }
 }]

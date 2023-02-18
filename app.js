@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-const port = process.env.PORT || 6000;
+const port = 6000 || process.env.PORT;
 
 const ussdRoute = require("./services/ussdService");
 const userRoute = require("./services/userService");
