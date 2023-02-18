@@ -10,16 +10,29 @@ async function hashPassword(password) {
     return await bcrypt.compare(plainPassword, hashedPassword);
    }
     
-
+// Registration Route
 exports.adminRegister = [
     async (req, res, next) => {
         try {
          const { email, password, role } = req.body
+         const user = await Admin.findOne({ email });
+         if (user) {
+            res.status(400).send('User Already Exist');
+         }
          const hashedPassword = await hashPassword(password);
-         const newUser = new Admin({ email, password: hashedPassword, role: role || "basic" });
-         const accessToken = jwt.sign({ userId: newUser._id }, process.env.TOKEN_KEY, {
-          expiresIn: "1d"
-         });
+         const newUser = new Admin({ 
+            email, 
+            password: hashedPassword, 
+            role: role || "basic" 
+        });
+         const accessToken = jwt.sign({ 
+            userId: newUser._id 
+            }, 
+            process.env.TOKEN_KEY, 
+            {
+                expiresIn: "1d"
+            }
+        );
          newUser.accessToken = accessToken;
          await newUser.save();
          res.json({
@@ -46,7 +59,7 @@ exports.adminLogin = [(async (req, res)=> {
             
         }
         //Validate is user exist in our database
-        const user = await User.findOne({ email });
+        const user = await Admin.findOne({ email });
 
         if (user && (await bcrypt.compare(password, user.password))) {
             //Create token
@@ -64,12 +77,11 @@ exports.adminLogin = [(async (req, res)=> {
             //save user token
             user.token = token;
             //user
-            console.log("Successul login")
-            return res.render('pages/dashboard', {
-                user: user.first_name
-            });
-        }
+            console.log("Successul login");
+            res.send(user);
+        } else {
         return res.status(400).send("Invalid Credentials");
+    }
     }
     catch(res){
         console.log(res)
