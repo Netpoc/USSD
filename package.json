@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "accesscontrol": "^2.2.1",
     "africastalking": "^0.5.9",
     "axios": "^1.2.1",
     "bcryptjs": "^2.4.3",
