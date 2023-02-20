@@ -18,7 +18,7 @@ exports.ussd = [(req, res) => {
 			1. Maize
 			2. Cassava
 			3. Rice
-			4. Others
+			
 		`;
 	} else if (text === "2") {
 		// Seeds Option
@@ -43,6 +43,9 @@ exports.ussd = [(req, res) => {
 	} else if ( text === "1*2") {
 		//Cassava stems quantity
 		response = `CON Enter the bundle of stems you require (600/bundle)`
+	} else if ( text === "1*3") {
+		//Rice seedling
+		response = `CON Enter the quantity of rice seeds you require`
 	}
     // Print the response onto the page so that our SDK can read it
     res.set("Content-Type: text/plain");
