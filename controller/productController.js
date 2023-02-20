@@ -7,8 +7,8 @@ exports.addItem = [async (req, res, next) => {
         const { title, description, quantity, category, price, barcode } = req.body;
         const item = await Item.findOne({barcode})
         if (item) {
-            res.status(400).send('Product Already in Database');
-        }
+            res.send('Product Already in Database');
+        } else {
         const newItem = new Item({
             title,
             description,
@@ -19,6 +19,7 @@ exports.addItem = [async (req, res, next) => {
         });
         await newItem.save();
         res.status(201).send('Item added to database successfully')
+    }
     } catch (err) {
         console.log(err);
         res.status(500).send('Server Error');
